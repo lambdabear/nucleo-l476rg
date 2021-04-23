@@ -1,14 +1,12 @@
 use stm32l4xx_hal::prelude::*;
-use stm32l4xx_hal::gpio::{gpioa::{self, PA5}, Output, PushPull};
+use stm32l4xx_hal::gpio::{gpioa::PA5, Output, PushPull};
 
 pub type LD2 = PA5<Output<PushPull>>;
 
 pub struct Led(LD2);
 
 impl Led {
-    pub fn new(mut gpioa: gpioa::Parts) -> Self {
-        let ld2 = gpioa.pa5.into_push_pull_output(&mut gpioa.moder, &mut gpioa.otyper);
-
+    pub fn new(ld2: PA5<Output<PushPull>>) -> Self {
         Led(ld2)
     }
 

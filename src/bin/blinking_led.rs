@@ -9,15 +9,17 @@ use nucleo_l476rg::led;
 #[cortex_m_rt::entry]
 fn main() -> ! {
     defmt::info!("Blinking LED...");
+    
     let p = stm32::Peripherals::take().expect("Take peripherals error");
     let cp = stm32::CorePeripherals::take().expect("Take core peripherals error");
     let mut flash = p.FLASH.constrain();
     let mut rcc = p.RCC.constrain();
     let mut pwr = p.PWR.constrain(&mut rcc.apb1r1);
     let clocks = rcc.cfgr.freeze(&mut flash.acr, &mut pwr);
-    let gpioa = p.GPIOA.split(&mut rcc.ahb2);
+    let mut gpioa = p.GPIOA.split(&mut rcc.ahb2);
+    let pa5 = gpioa.pa5.into_push_pull_output(&mut gpioa.moder, &mut gpioa.otyper);
 
-    let mut led = led::Led::new(gpioa);
+    let mut led = led::Led::new(pa5);
     let mut delay = Delay::new(cp.SYST, clocks);
 
     loop {
