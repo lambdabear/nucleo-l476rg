@@ -6,7 +6,7 @@ pub type LD2 = PA5<Output<PushPull>>;
 pub struct Led(LD2);
 
 impl Led {
-    pub fn new(ld2: PA5<Output<PushPull>>) -> Self {
+    pub fn new(ld2: LD2) -> Self {
         Led(ld2)
     }
 
